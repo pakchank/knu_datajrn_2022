@@ -1,0 +1,37 @@
+---
+title: "경북대학교 데이터 저널리즘 2022"
+author: "박찬경"
+date: "`r Sys.Date()`"
+categories: ["R"]
+tags: ["R Markdown", "plot", "regression"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+# 소개
+
+이 블로그는 2022년 경북대학교 데이터 저널리즘 수업 최종 프로젝트를 위해 제작되었습니다. 이곳에 실린 기사들은 수업을 수강하는 학생들이 최선을 다해 작성한 데이터 저널리즘 기사들입니다. 재미있게 읽어주시길 바랍니다.
+
+You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+fit <- lm(dist ~ speed, data = cars)
+fit
+```
+
+# Including Plots
+
+You can also embed plots. See Figure \@ref(fig:pie) for example:
+
+```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
+par(mar = c(0, 1, 0, 1))
+pie(
+  c(280, 60, 20),
+  c('Sky', 'Sunny side of pyramid', 'Shady side of pyramid'),
+  col = c('#0292D8', '#F7EA39', '#C4B632'),
+  init.angle = -50, border = NA
+)
+```
