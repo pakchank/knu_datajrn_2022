@@ -1,0 +1,80 @@
+---
+title: 개인 중간 과제 답안
+author: 박찬경
+date: '2022-06-07'
+slug: ''
+categories: []
+tags: []
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+
+Sys.getlocale()
+Sys.setlocale("LC_ALL","C") # 강제 언어 삭제
+Sys.setlocale("LC_ALL","Korean") # 언어 다시 한글로
+```
+
+```{r, include=FALSE}
+donations <- read_csv("../../../2020 Fall/EBIS3103/data/donorschoose/donations.csv")
+```
+
+```{r, echo=FALSE}
+colorize <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color,
+      x)
+  } else x
+}
+```
+
+`r colorize("색상은 이렇게 사용합니다.", "red")`
+
+# 1. Completion Donation은 크다.
+```{r fig.cap = "Average Donation Sizes", echo=FALSE}
+donations %>%
+    filter(!is.na(completion)) %>%
+    group_by(completion) %>%
+    summarise(avg_size = mean(base_amount)) %>%
+    ggplot(aes(completion, avg_size)) +
+    geom_bar(stat="identity")
+```
+
+# 2. Completition을 하는 사람은 더 많은 donation을 하나?
+```{r}
+completors <- donations %>% 
+    filter(completion == 1) %>%
+    pull(donor_id)
+```
+
+```{r}
+onetime <- donations %>%
+    group_by(donor_id) %>%
+    summarise(n = n()) %>%
+    filter(n == 1) %>%
+    pull(donor_id)
+```
+
+```{r}
+donations %>%
+    filter(!is.na(completion) & !(donor_id %in% onetime)) %>%
+    mutate(completor = ifelse(donor_id %in% completors, "completor", "noncompletor")) %>%
+    group_by(completor) %>%
+    summarise(avg_size = mean(base_amount))
+```
+
+
+## 3. 같은 사람이 comletition할 때 많이 내나?
+```{r}
+donations %>%
+    mutate(completor = ifelse(donor_id %in% completors, "completor", "noncompletor")) %>%
+    filter(!is.na(completion) & !(donor_id %in% onetime) & (completor == "completor")) %>%
+    group_by(donor_id, completion) %>%
+    summarise(avg_size = mean(base_amount)) %>%
+    group_by(completion) %>%
+    summarise(avg_size = mean(avg_size)) %>%
+    ggplot(aes(completion, avg_size)) +
+    geom_bar(stat="identity")
+```
