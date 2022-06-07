@@ -1,0 +1,58 @@
+---
+title: 개인 중간 과제 답안
+author: 박찬경
+date: '2022-06-07'
+slug: ''
+categories: []
+tags: []
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<p><span style="color: red;">색상은 이렇게 사용합니다.</span></p>
+<div id="completion-donation은-크다." class="section level1">
+<h1>1. Completion Donation은 크다.</h1>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" alt="Average Donation Sizes" width="672" />
+<p class="caption">
+Figure 1: Average Donation Sizes
+</p>
+</div>
+</div>
+<div id="completition을-하는-사람은-더-많은-donation을-하나" class="section level1">
+<h1>2. Completition을 하는 사람은 더 많은 donation을 하나?</h1>
+<pre class="r"><code>completors &lt;- donations %&gt;% 
+    filter(completion == 1) %&gt;%
+    pull(donor_id)</code></pre>
+<pre class="r"><code>onetime &lt;- donations %&gt;%
+    group_by(donor_id) %&gt;%
+    summarise(n = n()) %&gt;%
+    filter(n == 1) %&gt;%
+    pull(donor_id)</code></pre>
+<pre class="r"><code>donations %&gt;%
+    filter(!is.na(completion) &amp; !(donor_id %in% onetime)) %&gt;%
+    mutate(completor = ifelse(donor_id %in% completors, &quot;completor&quot;, &quot;noncompletor&quot;)) %&gt;%
+    group_by(completor) %&gt;%
+    summarise(avg_size = mean(base_amount))</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   completor    avg_size
+##   &lt;chr&gt;           &lt;dbl&gt;
+## 1 completor       146. 
+## 2 noncompletor     25.2</code></pre>
+<div id="같은-사람이-comletition할-때-많이-내나" class="section level2">
+<h2>3. 같은 사람이 comletition할 때 많이 내나?</h2>
+<pre class="r"><code>donations %&gt;%
+    mutate(completor = ifelse(donor_id %in% completors, &quot;completor&quot;, &quot;noncompletor&quot;)) %&gt;%
+    filter(!is.na(completion) &amp; !(donor_id %in% onetime) &amp; (completor == &quot;completor&quot;)) %&gt;%
+    group_by(donor_id, completion) %&gt;%
+    summarise(avg_size = mean(base_amount)) %&gt;%
+    group_by(completion) %&gt;%
+    summarise(avg_size = mean(avg_size)) %&gt;%
+    ggplot(aes(completion, avg_size)) +
+    geom_bar(stat=&quot;identity&quot;)</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;donor_id&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+</div>

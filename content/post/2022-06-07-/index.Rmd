@@ -16,7 +16,7 @@ Sys.setlocale("LC_ALL","Korean") # 언어 다시 한글로
 ```
 
 ```{r, include=FALSE}
-donations <- read_csv("../../../2020 Fall/EBIS3103/data/donorschoose/donations.csv")
+donations <- read_csv("donations.csv")
 ```
 
 ```{r, echo=FALSE}
