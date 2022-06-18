@@ -12,6 +12,10 @@ tags: []
 library(tidyverse)
 library(ggtext)
 library(glue)
+
+Sys.getlocale()
+Sys.setlocale("LC_ALL","C") # 강제 언어 삭제
+Sys.setlocale("LC_ALL","Korean") # 언어 다시 한글로
 ```
 
 
