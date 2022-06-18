@@ -1,0 +1,206 @@
+---
+title: 녹조, 이제는 정치적 논쟁거리가 아닌 환경문제로
+author: 김민진, 이다영, 김성찬, 유용하
+date: '2022-06-18'
+slug: team4
+categories: []
+tags: []
+---
+
+```{r, include=FALSE}
+library("tidyverse")
+library("ggplot2")
+library("dplyr")
+library("ggtext")
+library("ggrepel")
+
+Sys.getlocale()
+Sys.setlocale("LC_ALL","C") # 강제 언어 삭제
+Sys.setlocale("LC_ALL","Korean") # 언어 다시 한글로
+```
+```{r, include=FALSE}
+red <-read.csv("red_tide.csv", fileEncoding = "UCS-2LE")
+green <-read.csv("green_tide.csv", fileEncoding = "UCS-2LE")
+
+red10 <- subset(red, X2010>=1)
+red10 <-subset(red10, select=X2010)
+
+
+red11 <- subset(red, select=X2011)
+red11 <- subset(red11, X2011>=1)
+
+
+red12 <- subset(red, select=X2012)
+red12 <- subset(red12, X2012>=1)
+
+
+red13 <- subset(red, select=X2013)
+red13 <- subset(red13, X2013>=1)
+
+
+
+red14 <- subset(red, select=X2014)
+red14 <- subset(red14, X2014>=1)
+
+
+
+red15 <- subset(red, select=X2015)
+red15 <- subset(red15, X2015>=1)
+
+
+red16 <- subset(red, select=X2016)
+red16 <- subset(red16, X2016>=1)
+
+
+red17 <- subset(red, select=X2017)
+red17 <- subset(red17, X2017>=1)
+
+
+red18 <- subset(red, select=X2018)
+red18 <- subset(red18, X2018>=1)
+
+
+red19 <- subset(red, select=X2019)
+red19 <- subset(red19, X2019>=1)
+
+
+red20 <- subset(red, select=X2020)
+red20 <- subset(red20, X2020>=1)
+
+red21 <- subset(red, select=X2021)
+red21 <- subset(red21, X2021>=1)
+
+
+year <- c(2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021)
+Red <- c(colMeans(red10), colMeans(red11), colMeans(red12),colMeans(red13),colMeans(red14),colMeans(red15), colMeans(red16), colMeans(red17),colMeans(red18), colMeans(red19),colMeans(red20),colMeans(red21))
+```
+
+```{r, include=FALSE}
+reddata <- data.frame(year, Red)
+
+
+green10 <- subset(green, X2010>=1)
+green10 <- subset(green10, select=X2010)
+
+
+green11 <- subset(green, select=X2011)
+green11 <- subset(green11, X2011>=1)
+
+
+green12 <- subset(green, select=X2012)
+green12 <- subset(green12, X2012>=1)
+
+
+green13 <- subset(green, select=X2013)
+green13 <- subset(green13, X2013>=1)
+
+
+green14 <- subset(green, select=X2014)
+green14 <- subset(green14, X2014>=1)
+
+
+
+green15 <- subset(green, select=X2015)
+green15 <- subset(green15, X2015>=1)
+
+green16 <- subset(green, select=X2016)
+green16 <- subset(green16, X2016>=1)
+
+green17 <- subset(green, select=X2017)
+green17 <- subset(green17, X2017>=1)
+
+green18 <- subset(green, select=X2018)
+green18 <- subset(green18, X2018>=1)
+
+
+green19 <- subset(green, select=X2019)
+green19 <- subset(green19, X2019>=1)
+
+
+green20 <- subset(green, select=X2020)
+green20 <- subset(green20, X2020>=1)
+
+
+green21 <- subset(green, select=X2021)
+green21 <- subset(green21, X2021>=1)
+
+
+year <- c(2010:2021)
+Green <- c(colMeans(green10), colMeans(green11), colMeans(green12),colMeans(green13),colMeans(green14),colMeans(green15), colMeans(green16), colMeans(green17),colMeans(green18), colMeans(green19),colMeans(green20),colMeans(green21))
+greendata <- data.frame(year, Green)
+
+red_green_tide <- merge(greendata, reddata, by='year')
+```
+
+```{r, include=FALSE}
+red_green_tide2 <- red_green_tide %>%
+  pivot_longer(!year, names_to = "Tide", values_to = "Cell_number") %>%
+  mutate(species= ifelse(Tide == "Red", "적조", "녹조"))
+```
+
+```{r, include=FALSE}
+data_ends <- red_green_tide2 %>%
+  filter(year == 2021)
+```
+
+
+ 지난 2일 낙동강유역환경청은 낙동강 물금·매리 지점에 조류경보 관심 단계를 내렸다. 이는 경남지역에 내려진 올해 첫 조류경보 관심 단계다.<br> 조류경보제는 하천과 호소의 조류 발생 상황을 측정, 상수원 안정성을 확보하기 위해 1998년부터 시행되고 있는 제도로, 관심·경계·대발생 3단계로 나뉜다. 관심 단계는 유해 남조류 세포 수가 2회 연속 1천 개를 넘기면 내려진다. 예년 여름과 같이 올해도 녹조와의 사투가 벌어질 것으로 보인다. 
+ 
+ 하지만 여전히 녹조는 환경문제로 받아들여지기보단 정치적 논쟁거리로서 소비되고 있다. 지난 2월 당시 후보였던 윤석열 대통령은 상주 선거 유세에서 이명박 전 정부의 4대강 사업을 이어나가겠다고 밝혔다. 문재인 전 정부의 4대강 재자연화 사업을 폐지하겠다는 뜻으로, 다시 화두에 오른 4대강 사업은 어김없이 성패에 대한 정치적 논쟁으로 귀결됐다.
+
+
+### 녹조는 왜 위험한가
+ 녹조는 식물성 플랑크톤인 남조류가 대량 발생해 물이 녹색으로 바뀌어 보이는 현상을 말한다. 조류가 발생되기 위해서는 탄소(C), 수소(H), 산소(O), 질소(N), 인(P) 5가지 원소가 필요하다. 자연에서 쉽게 얻을 수 있는 탄소, 수소, 산소와 달리 질소와 인은 그렇지 않은데 이러한 질소와 인은 화학비료로부터 얻어진다. 한국은 세계에서 비료를 가장 많이 사용하는 나라로 비가 오면 미처 토양에 흡수되지 못한 비료의 질소와 인 성분이 강에 대량으로 흘러 들어간다. 이때 조류가 충분히 번식할 만한 느린 유속과 고온다습한 기후가 더해지면 남조류 수가 폭발적으로 증가해 물이 초록색을 띠게 되는 것이다. 
+
+ 녹조는 사회·경제·환경적인 문제를 불러일으킨다. 먼저 사회적으로 녹조는 강이나 하천 인근의 친수 활동을 제한한다. 녹조로 인해 수면에서 발생하는 악취가 시민들에게 불쾌감이나 불편을 느끼게 하기 때문이다. 
+ 다음으로 경제적인 손실을 일으킨다. 수돗물을 생산할 때 조류 내 독소물질을 제거하기 위해서 정수처리 단계를 거치는데 이 과정에서 높은 비용이 든다. 
+ 마지막으로 생태계 불균형을 발생시키고 환경을 오염시킨다. 여름철 녹조로 인해 햇빛이 차단되면 조류는 광합성을 하지 못한 채 호흡 과정만을 거치고, 물의 용존 산소량은 줄어든다. 그 결과 물고기나 수중생물들이 폐사하게 된다. 남조류가 생산하는 독소 역시 수생 생물에 악영향을 미치고 결국 인간이 섭취하며 독소가 우리 몸에 축적된다.
+
+### 녹조는 정치적인 문제?
+ 녹조는 4대강 사업이 시작되면서 발생하기 시작했다. 때문에, 녹조로 인한 문제가 심각해질 때마다 4대강 사업의 성패는 빠지지 않고 등장한다.<br> 4대강 사업은 이명박 정부에서 4대강(한강, 낙동강, 금강, 영산강) 유역을 정비한 사업으로, 2008년에 시작돼 2012년에 완공됐다.<br> 4년 동안 4대강 지류에 보 16개, 댐 5개, 저수지 96개를 설치해 홍수와 가뭄을 방지하고 수질 문제를 해결하겠다는 취지였다. 
+ 4대강 사업이 완공된 지 10년이 지난 지금 4대강 사업이 효과가 있었는지에 대한 논란은 여전히 계속되고 있다. 4대강 사업 이후 이상 기후로 인한 전국 집중호우 피해가 증가하고 있으며, 매년 여름 녹조 경보는 최고치를 갱신중이다.
+ 하지만 녹조 문제에 있어 주목해야 할 것은 4대강 사업이 아니다. 녹조와 적조의 관계를 통해 그 이유를 알아봤다. 
+
+### 녹조가 줄면 적조가 늘어난다
+ 적조란 식물성 플랑크톤의 대량 증식에 따라 바다 색깔이 붉게 변하는 현상이다. 적조 역시 녹조와 유사한 과정을 거쳐 발생하며 바다 환경과 생태계에 악영향을 미친다. 유속, 수온 상승, 기온 변화, 일조량 등 여러 가지 요인에 의해 영향을 받지만, 강물을 타고 흘러 내려온 질소(N)와 인(P)에 의한 영향이 가장 크다. 다시 말해 질소와 인이 녹아있는 물이 보를 통과해 바다로 유입되면 결국 적조 발생에 영향을 미친다는 뜻이다.
+ 
+```{r, echo=FALSE}
+red_green_tide2 %>%
+  ggplot(aes(x=year, y=Cell_number, color=species)) +
+  geom_line(stat="identity", size=1, show.legend = FALSE) +
+  geom_segment(aes(x = 2012, y = 0, xend = 2012, yend = 3700), color = "grey45") +
+  geom_label(x=2012, y=4500, label="4대강 보 완공시점", 
+             color="grey50", label.size = NA, vjust=1.5, hjust=0.48, size=5) +
+  geom_label_repel(aes(label = species),  data = data_ends,  
+                   label.size = NA, hjust=1, size=5,show.legend = FALSE) +
+  labs(x="", y="밀도(Cells/mL)", color="darkgrey",
+       title = "<span style = 'color : grey35'>녹조 감소는 적조 증가를 일으킨다</span>",
+       subtitle = "보 완공을 기점으로 녹조는 증가, 적조는 감소",
+       caption = "2017년 폭염으로 인해<br> 적조와 녹조가 많이 발생") +
+  scale_color_manual(breaks = c("녹조", "적조"),
+                     values = c("#317689", "#f78114")) +
+  scale_x_continuous(breaks = seq(2010,2021,by=1), expand = c(0.1,0)) +
+  scale_y_continuous(breaks = seq(0,5000, by=1000)) +
+ 
+  theme(text=element_text(color="darkgrey"),
+        panel.background = element_rect(fill="white"),
+        plot.title = element_markdown(size = 20, vjust = 10, face = "bold"),
+        plot.title.position = "plot",
+        plot.subtitle = element_markdown(size = 15),
+        plot.caption = element_markdown(hjust = 0.91, color = "darkgrey", face = "italic"),
+        plot.margin = unit(c(1,1,1,1),"cm"),
+        axis.title.y = element_text(size = 11, hjust = 0.82),
+        axis.text.x=element_text(color="darkgrey"),
+        axis.text.y=element_text(color="darkgrey"),
+        axis.ticks.x = element_blank(),
+        axis.line = element_line(color = "darkgrey"))
+     
+```
+ 
+ 위 그래프는 년도에 따른 녹조와 적조의 밀도변화를 나타낸 것이다. 적조와 녹조의 상관관계, 그리고 4대강과의 연관성을 알아볼 수 있다. <br>4대강 사업은 2012년에 완공됐고, 2018년부터 재자연화 정책으로 일부 보의 문을 개방하기 시작했다. 수온 변화, 강수량, 홍수 등 변수가 많기 때문에 그래프를 해석함에 있어 보의 개방 여부와 녹조의 밀도변화를 직접적으로 연관시키기는 힘들다. 주목해야 할 지점은 녹조와 적조의 상관관계다. 
+ 2012~2018년을 보면 전반적으로 녹조는 증가하는 추세를, 적조는 감소하는 추세를 보인다. 2017년의 경우, 폭염으로 녹조와 적조가 동시에 많이 발생해 예외적인 상황으로 간주해야 한다. 보를 설치하면서 강물이 바다로 흘러가지 못하게 막으니 오염된 물이 바다로 넘어가지 못해 녹조는 증가하지만, 적조는 감소하는 추세를 보이는 것이다.
+ 2018년 보를 개방하기 시작하면서는 녹조는 조금 감소하는 추세를, 적조는 조금 증가하는 추세를 보인다. 보를 개방하면서 오염된 강물이 바다로 흘러가니 녹조는 소폭 감소, 적조는 소폭 증가했다. 여기서 중요한 사실을 확인할 수 있다. 녹조가 줄면 적조가 늘어난다. 녹조와 적조는 둘 다 수질이 오염되어 발생하는 환경문제이다. 녹조가 줄어들어도 적조가 늘어나므로, 강의 오염도는 줄어들지 몰라도 바다의 오염도가 커지고 이는 바다의 수질과 생태계에 악영향을 미친다. 결국, 보의 개방 여부와 관계없이 수질 오염이 장소만 바꿔서 발생하는 것이다.
+
+### 결국, 중요한 것은 근본적인 원인 제거 
+ 녹조가 4대강 사업의 시작으로 인해 발생한 것은 사실이지만 근본적인 원인이 4대강 사업이라고 할 수는 없다. 녹조의 근본적인 원인은 화학비료에 의한 부영양화이다. 화학비료 속 질소(N)와 인(P)이 과도하게 강물에 녹아들고, 이를 먹이로 하는 조류나 남세균의 수가 폭발적으로 증가해 녹조가 발생하는 것이다. 전문가들은 녹조를 감소시키기 위한 가장 적은 비용의 효율적인 방식으로 인과 질소의 총량 감소를 말한다. 영양물질을 줄여야 녹조를, 더 나아가 적조도 줄일 수 있다.
+ 지난 2020년 국회 농림축산식품해양수산위원회 소속 위성곤 더불어민주당 의원이 농촌진흥청으로부터 받아 분석한 자료에 따르면 화학비료 사용량은 2019년 44만1200t으로 2011년보다 13.3% 증가했다. 보를 개방하면서 눈앞의 녹조가 줄어들었다고 해서 우리가 살아가고 있는 환경이 개선되고 있는 것은 아니다. 우리나라는 식생활에 있어 농업을 기반으로 하기 때문에 더욱 화학비료 사용에 대한 많은 고민이 필요할 것으로 보인다. 이제는 녹조 문제를 4대강 사업의 성패 문제로 그리고 정치적 당파 싸움으로 다룰 것이 아니라, 문제를 제대로 보고 환경을 위한 구체적인 해결책을 강구해야 할 때이다.
